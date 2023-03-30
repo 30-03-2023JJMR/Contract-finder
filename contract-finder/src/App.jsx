@@ -61,33 +61,54 @@ function App() {
   // },[])
 
   // Function to handle contract form submission
-  const handleContractSubmit = (event) => {
+  const handleContractSubmit = (event, candidates, contractDetails) => {
     event.preventDefault();
+    //get all data using skills that user has entered
     getData();
-    console.log("contractSubmit", contractDetails);
+    // filter the data based on availability of candidates
+    console.log("contractSubmit", contractDetails, candidates);
+    dateFilter(candidates, contractDetails);
+
     // Send contract details to back-end API
     // Add error handling and validation as needed
     //need filter for date range
   };
-  const getData = async () => {
+  function dateFilter(candidates, contractDetails) {
+    for (let i = 0; i < candidates.length; i++) {
+      if (contractDetails.startDate >= candidates[i].availability) {
+        console.log("hello");
+        return candidates[i].name;
+      } else {
+        ("there is no candidate available");
+      }
+    }
+    console.log("avail", candidates[0].availability);
+    console.log("start_date", contractDetails.startDate);
+  }
+  const getData = async (contractDetails) => {
     const { data, error } = await supabase.from("candidates").select();
     setCandidates(data);
-    console.log(data[0].name);
+    if (error) {
+      throw new Error(error.message);
+    }
+    // Update candidates state with retrieved data
+    //setCandidates(data);
+    // Call dateFilter function
   };
 
-  // Function to handle role form submission
-  const handleRoleSubmit = (event) => {
-    event.preventDefault();
-    // console.log("roleSubmit", event)
-    // Add role to list of roles
-    // Clear role form fields
-  };
-  // Function to handle candidate form submission
-  const handleCandidateSubmit = (event) => {
-    event.preventDefault();
-    // Add candidate to list of candidates
-    // Clear candidate form fields
-  };
+  // // Function to handle role form submission
+  // const handleRoleSubmit = (event) => {
+  //   event.preventDefault();
+  //   // console.log("roleSubmit", event)
+  //   // Add role to list of roles
+  //   // Clear role form fields
+  // };
+  // // Function to handle candidate form submission
+  // const handleCandidateSubmit = (event) => {
+  //   event.preventDefault();
+  //   // Add candidate to list of candidates
+  //   // Clear candidate form fields
+  // };
   return (
     <div>
       <h1>Contract Matching System</h1>
