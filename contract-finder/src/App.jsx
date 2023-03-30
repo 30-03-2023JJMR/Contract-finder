@@ -44,7 +44,7 @@ function App() {
   const [contractDetails, setContractDetails] = useState({});
   const [roles, setRoles] = useState([]);
   const [candidates, setCandidates] = useState([]);
-  console.log(import.meta.env.VITE_KEY_TEST);
+  //console.log(import.meta.env.VITE_KEY_TEST);
 
   // let candidatesDummy = [
   //   {"John": ["Java", "Javascript", "AWS"]},
@@ -63,15 +63,17 @@ function App() {
   // Function to handle contract form submission
   const handleContractSubmit = (event) => {
     event.preventDefault();
-    getData();
-    console.log("contractSubmit", contractDetails);
+    getData(contractDetails);
+    //console.log("contractSubmit", contractDetails);
     // Send contract details to back-end API
     // Add error handling and validation as needed
   };
   const getData = async () => {
-    const { data, error } = await supabase.from("candidates").select();
+    const { data, error } = await supabase
+    .from("candidates")
+    .select();
     setCandidates(data);
-    console.log(data[0].name);
+    console.log(candidates);
   };
 
   // Function to handle role form submission
