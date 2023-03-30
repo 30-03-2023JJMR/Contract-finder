@@ -11,82 +11,34 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <div className="App">
-//       <div>
-//         <a href="https://vitejs.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://reactjs.org" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.jsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </div>
-//   )
-// }
 
 function App() {
   const [contractDetails, setContractDetails] = useState({});
   const [roles, setRoles] = useState([]);
   const [candidates, setCandidates] = useState([]);
-  console.log(import.meta.env.VITE_KEY_TEST);
+  //console.log(import.meta.env.VITE_KEY_TEST);
 
-  // let candidatesDummy = [
-  //   {"John": ["Java", "Javascript", "AWS"]},
-  //   {"Jane": ["Python", "Javascript", "React"]},
-  //   {"Bob": ["Java", "AWS", "SQL"]}
-  // ];
-
-  // useEffect(() => {
-  //   function showCandidates(){
-  //     setCandidates(candidatesDummy)
-  //   }
-
-  //   showCandidates();
-  // },[])
 
   // Function to handle contract form submission
   const handleContractSubmit = (event) => {
     event.preventDefault();
-    getData();
-    console.log("contractSubmit", contractDetails);
+    getData(contractDetails);
+    console.log(contractDetails)
+    console.log(candidates)
+    //console.log("contractSubmit", contractDetails);
     // Send contract details to back-end API
     // Add error handling and validation as needed
   };
-  const getData = async () => {
-    const { data, error } = await supabase.from("candidates").select();
+
+  const getData = async (contractDetails) => {
+    const { data, error } = await supabase
+    .from("candidates")
+    .select()
+    .like("skills", `%${contractDetails.skills}%`);
     setCandidates(data);
-    console.log(data[0].name);
   };
 
-  // Function to handle role form submission
-  const handleRoleSubmit = (event) => {
-    event.preventDefault();
-    // console.log("roleSubmit", event)
-    // Add role to list of roles
-    // Clear role form fields
-  };
-  // Function to handle candidate form submission
-  const handleCandidateSubmit = (event) => {
-    event.preventDefault();
-    // Add candidate to list of candidates
-    // Clear candidate form fields
-  };
+  
   return (
     <div>
       <h1>Contract Matching System</h1>
@@ -144,35 +96,33 @@ function App() {
             }
           />
         </label>
-
-        {/* </form> */}
-        {/* Role form */}
-        {/* <form onSubmit={handleRoleSubmit}> */}
         <label>
           Role Name:
-          <input type="text" />
+          <input
+            type="text"
+            value={contractDetails.role}
+            onChange={(event) =>
+              setContractDetails({
+                ...contractDetails,
+                role: event.target.value,
+              })
+            }
+          />
         </label>
         <label>
           Required Skills:
-          <input type="text" />
+          <input
+            type="text"
+            value={contractDetails.skills}
+            onChange={(event) =>
+              setContractDetails({
+                ...contractDetails,
+                skills: event.target.value,
+              })
+            }
+          />
         </label>
-        {/* <button type="submit">Add Role</button> */}
-        {/* </form> */}
-        {/* Candidate form */}
-        {/* <form onSubmit={handleCandidateSubmit}> */}
-        {/* <label>
-          Name:
-          <input type="text" />
-        </label>
-        <label>
-          Contact:
-          <input type="text" />
-        </label>
-        <label>
-          Skills:
-          <input type="text" />
-        </label> */}
-        {/* <button type="submit">Add Candidate</button> */}
+        
         <button type="submit" value="-----dj---">
           Submit
         </button>
