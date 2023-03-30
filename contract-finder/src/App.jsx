@@ -16,6 +16,7 @@ function App() {
   const [contractDetails, setContractDetails] = useState({});
   const [roles, setRoles] = useState([]);
   const [candidates, setCandidates] = useState([]);
+  const [filterCandidate, setFilterCandidate] = useState([])
   //console.log(import.meta.env.VITE_KEY_TEST);
 
 
@@ -23,6 +24,7 @@ function App() {
   const handleContractSubmit = (event) => {
     event.preventDefault();
     getData(contractDetails);
+   console.log("filter", filters)
     console.log(contractDetails)
     console.log(candidates)
     //console.log("contractSubmit", contractDetails);
@@ -34,10 +36,12 @@ function App() {
     const { data, error } = await supabase
     .from("candidates")
     .select()
-    .like("skills", `%${contractDetails.skills}%`);
+    .like("skills", `%${contractDetails.skills}%`)
+    .lt ("availability", contractDetails.startDate);
     setCandidates(data);
   };
 
+  
   
   return (
     <div>
@@ -140,13 +144,13 @@ function App() {
       </ul>
       <h2>Candidates</h2>
       <ul>
-        {candidates.map((candidate) => (
-          <li key={candidate.id}>
-            <strong>{candidate.name}</strong>
+        {candidates.map((candidates) => (
+          <li key={candidates.id}>
+            <strong>{candidates.name}</strong>
             <br />
-            Contact: {candidate.contact}
+            Contact: {candidates.contact}
             <br />
-            Skills: {candidate.skills}
+            Skills: {candidates.skills}
           </li>
         ))}
       </ul>
