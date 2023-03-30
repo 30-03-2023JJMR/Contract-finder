@@ -24,7 +24,6 @@ function App() {
   const handleContractSubmit = (event) => {
     event.preventDefault();
     getData(contractDetails);
-   let filters =  dateFilter()
    console.log("filter", filters)
     console.log(contractDetails)
     console.log(candidates)
@@ -37,24 +36,12 @@ function App() {
     const { data, error } = await supabase
     .from("candidates")
     .select()
-    .like("skills", `%${contractDetails.skills}%`);
+    .like("skills", `%${contractDetails.skills}%`)
+    .lt ("availability", contractDetails.startDate);
     setCandidates(data);
   };
 
-  function dateFilter() {
-    let fica = []
-    for (let i = 0; i < candidates.length; i++) {
-      if (Date(contractDetails.startDate) >= Date(candidates[i].availability)) {
-        fica.push(candidates[i]);
-      } else {
-        console.log("there is no candidate available");
-      }
-      
-    }
-    console.log("avail", candidates[0].availability);
-    console.log("start_date", contractDetails.startDate);
-    setFilterCandidate(fica)
-  }
+  
   
   return (
     <div>
@@ -157,13 +144,13 @@ function App() {
       </ul>
       <h2>Candidates</h2>
       <ul>
-        {filterCandidate.map((filterCandidate) => (
-          <li key={filterCandidate.id}>
-            <strong>{filterCandidate.name}</strong>
+        {candidates.map((candidates) => (
+          <li key={candidates.id}>
+            <strong>{candidates.name}</strong>
             <br />
-            Contact: {filterCandidate.contact}
+            Contact: {candidates.contact}
             <br />
-            Skills: {filterCandidate.skills}
+            Skills: {candidates.skills}
           </li>
         ))}
       </ul>
