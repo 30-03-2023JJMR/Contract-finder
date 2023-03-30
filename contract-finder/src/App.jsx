@@ -67,6 +67,7 @@ function App() {
     console.log("contractSubmit", contractDetails);
     // Send contract details to back-end API
     // Add error handling and validation as needed
+    //need filter for date range
   };
   const getData = async () => {
     const { data, error } = await supabase.from("candidates").select();
