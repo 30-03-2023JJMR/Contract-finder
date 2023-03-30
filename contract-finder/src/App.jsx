@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -36,15 +36,32 @@ function App() {
   const [contractDetails, setContractDetails] = useState({});
   const [roles, setRoles] = useState([]);
   const [candidates, setCandidates] = useState([]);
+
+  // let candidatesDummy = [
+  //   {"John": ["Java", "Javascript", "AWS"]},
+  //   {"Jane": ["Python", "Javascript", "React"]},
+  //   {"Bob": ["Java", "AWS", "SQL"]}
+  // ];
+
+  // useEffect(() => {
+  //   function showCandidates(){
+  //     setCandidates(candidatesDummy)
+  //   }
+
+  //   showCandidates();
+  // },[])
+  
   // Function to handle contract form submission
   const handleContractSubmit = (event) => {
     event.preventDefault();
+    console.log("contractSubmit", contractDetails);
     // Send contract details to back-end API
     // Add error handling and validation as needed
   };
   // Function to handle role form submission
   const handleRoleSubmit = (event) => {
     event.preventDefault();
+    // console.log("roleSubmit", event)
     // Add role to list of roles
     // Clear role form fields
   };
@@ -75,10 +92,10 @@ function App() {
           Contact:
           <input type="text" value={contractDetails.contact} onChange={(event) => setContractDetails({ ...contractDetails, contact: event.target.value })} />
         </label>
-        <button type="submit">Submit</button>
-      </form>
+        
+      {/* </form> */}
       {/* Role form */}
-      <form onSubmit={handleRoleSubmit}>
+      {/* <form onSubmit={handleRoleSubmit}> */}
         <label>
           Role Name:
           <input type="text" />
@@ -87,11 +104,11 @@ function App() {
           Required Skills:
           <input type="text" />
         </label>
-        <button type="submit">Add Role</button>
-      </form>
+        {/* <button type="submit">Add Role</button> */}
+      {/* </form> */}
       {/* Candidate form */}
-      <form onSubmit={handleCandidateSubmit}>
-        <label>
+      {/* <form onSubmit={handleCandidateSubmit}> */}
+        {/* <label>
           Name:
           <input type="text" />
         </label>
@@ -102,8 +119,9 @@ function App() {
         <label>
           Skills:
           <input type="text" />
-        </label>
-        <button type="submit">Add Candidate</button>
+        </label> */}
+        {/* <button type="submit">Add Candidate</button> */}
+        <button type="submit" value="-----dj---">Submit</button>
       </form>
       {/* Display list of roles and candidates */}
       <h2>Roles</h2>
