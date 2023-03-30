@@ -16,6 +16,7 @@ function App() {
   const [contractDetails, setContractDetails] = useState({});
   const [roles, setRoles] = useState([]);
   const [candidates, setCandidates] = useState([]);
+  const [filterCandidate, setFilterCandidate] = useState([])
   //console.log(import.meta.env.VITE_KEY_TEST);
 
 
@@ -23,6 +24,8 @@ function App() {
   const handleContractSubmit = (event) => {
     event.preventDefault();
     getData(contractDetails);
+   let filters =  dateFilter()
+   console.log("filter", filters)
     console.log(contractDetails)
     console.log(candidates)
     //console.log("contractSubmit", contractDetails);
@@ -38,6 +41,20 @@ function App() {
     setCandidates(data);
   };
 
+  function dateFilter() {
+    let fica = []
+    for (let i = 0; i < candidates.length; i++) {
+      if (Date(contractDetails.startDate) >= Date(candidates[i].availability)) {
+        fica.push(candidates[i]);
+      } else {
+        console.log("there is no candidate available");
+      }
+      
+    }
+    console.log("avail", candidates[0].availability);
+    console.log("start_date", contractDetails.startDate);
+    setFilterCandidate(fica)
+  }
   
   return (
     <div>
@@ -140,13 +157,13 @@ function App() {
       </ul>
       <h2>Candidates</h2>
       <ul>
-        {candidates.map((candidate) => (
-          <li key={candidate.id}>
-            <strong>{candidate.name}</strong>
+        {filterCandidate.map((filterCandidate) => (
+          <li key={filterCandidate.id}>
+            <strong>{filterCandidate.name}</strong>
             <br />
-            Contact: {candidate.contact}
+            Contact: {filterCandidate.contact}
             <br />
-            Skills: {candidate.skills}
+            Skills: {filterCandidate.skills}
           </li>
         ))}
       </ul>
