@@ -1,7 +1,15 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+
+import { createClient } from "@supabase/supabase-js";
+
+//Create a single supabase client for interacting with your database
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
 
 // function App() {
 //   const [count, setCount] = useState(0)
@@ -36,6 +44,7 @@ function App() {
   const [contractDetails, setContractDetails] = useState({});
   const [roles, setRoles] = useState([]);
   const [candidates, setCandidates] = useState([]);
+  console.log(import.meta.env.VITE_KEY_TEST);
 
   // let candidatesDummy = [
   //   {"John": ["Java", "Javascript", "AWS"]},
@@ -50,14 +59,21 @@ function App() {
 
   //   showCandidates();
   // },[])
-  
+
   // Function to handle contract form submission
   const handleContractSubmit = (event) => {
     event.preventDefault();
+    getData();
     console.log("contractSubmit", contractDetails);
     // Send contract details to back-end API
     // Add error handling and validation as needed
   };
+  const getData = async () => {
+    const { data, error } = await supabase.from("candidates").select();
+    setCandidates(data);
+    console.log(data[0].name);
+  };
+
   // Function to handle role form submission
   const handleRoleSubmit = (event) => {
     event.preventDefault();
@@ -78,24 +94,60 @@ function App() {
       <form onSubmit={handleContractSubmit}>
         <label>
           Start Date:
-          <input type="date" value={contractDetails.startDate} onChange={(event) => setContractDetails({ ...contractDetails, startDate: event.target.value })} />
+          <input
+            type="date"
+            value={contractDetails.startDate}
+            onChange={(event) =>
+              setContractDetails({
+                ...contractDetails,
+                startDate: event.target.value,
+              })
+            }
+          />
         </label>
         <label>
           End Date:
-          <input type="date" value={contractDetails.endDate} onChange={(event) => setContractDetails({ ...contractDetails, endDate: event.target.value })} />
+          <input
+            type="date"
+            value={contractDetails.endDate}
+            onChange={(event) =>
+              setContractDetails({
+                ...contractDetails,
+                endDate: event.target.value,
+              })
+            }
+          />
         </label>
         <label>
           Name:
-          <input type="text" value={contractDetails.name} onChange={(event) => setContractDetails({ ...contractDetails, name: event.target.value })} />
+          <input
+            type="text"
+            value={contractDetails.name}
+            onChange={(event) =>
+              setContractDetails({
+                ...contractDetails,
+                name: event.target.value,
+              })
+            }
+          />
         </label>
         <label>
           Contact:
-          <input type="text" value={contractDetails.contact} onChange={(event) => setContractDetails({ ...contractDetails, contact: event.target.value })} />
+          <input
+            type="text"
+            value={contractDetails.contact}
+            onChange={(event) =>
+              setContractDetails({
+                ...contractDetails,
+                contact: event.target.value,
+              })
+            }
+          />
         </label>
-        
-      {/* </form> */}
-      {/* Role form */}
-      {/* <form onSubmit={handleRoleSubmit}> */}
+
+        {/* </form> */}
+        {/* Role form */}
+        {/* <form onSubmit={handleRoleSubmit}> */}
         <label>
           Role Name:
           <input type="text" />
@@ -105,9 +157,9 @@ function App() {
           <input type="text" />
         </label>
         {/* <button type="submit">Add Role</button> */}
-      {/* </form> */}
-      {/* Candidate form */}
-      {/* <form onSubmit={handleCandidateSubmit}> */}
+        {/* </form> */}
+        {/* Candidate form */}
+        {/* <form onSubmit={handleCandidateSubmit}> */}
         {/* <label>
           Name:
           <input type="text" />
@@ -121,7 +173,9 @@ function App() {
           <input type="text" />
         </label> */}
         {/* <button type="submit">Add Candidate</button> */}
-        <button type="submit" value="-----dj---">Submit</button>
+        <button type="submit" value="-----dj---">
+          Submit
+        </button>
       </form>
       {/* Display list of roles and candidates */}
       <h2>Roles</h2>
@@ -150,4 +204,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
