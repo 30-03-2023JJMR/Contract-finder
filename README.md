@@ -10,9 +10,9 @@ Create a lightweight system that allows you to:
 
 ## Tech Stack
 
-* React Vite
-* SupaBase
-* Figma
+* React Vite - chosen because light and low memory
+* SupaBase was used as backend as its easy to set up and good documentation also as this is a one day project consideration to future cost of using a backend platform was declared as not important.
+* Figma - planning
 
 ## Setup
 To run this project, install it locally using npm i
